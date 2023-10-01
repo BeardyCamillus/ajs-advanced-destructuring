@@ -1,24 +1,37 @@
-import orderByProperties, { character, rulesOfOrder } from '../app';
+import getSpecial from '../app';
 
-test('test that hasOwnProperty', () => {
-  const expection = () => {
-    for (const item in character) {
-      if (Object.prototype.hasOwnProperty.call(character, item));
-    }
-  };
-  expect(expection).toBeTruthy();
-});
+const character = {
+  name: 'Лучник',
+  type: 'Bowman',
+  health: 50,
+  level: 3,
+  attack: 40,
+  defence: 10,
+  special: [
+    {
+      id: 8,
+      name: 'Двойной выстрел',
+      icon: 'http://...',
+      description: 'Двойной выстрел наносит двойной урон',
+    },
+    {
+      id: 9,
+      name: 'Нокаутирующий удар',
+      icon: 'http://...',
+    }],
+};
 
-test('test order by properties', () => {
-  const expected = [
-    { key: 'name', value: 'мечник' },
-    { key: 'level', value: 2 },
-    { key: 'attack', value: 80 },
-    { key: 'defence', value: 40 },
-    { key: 'health', value: 10 },
-  ];
-
-  const received = orderByProperties(character, rulesOfOrder);
-
-  expect(received).toEqual(expected);
+test('test get special', () => {
+  expect(getSpecial(character)).toMatchObject([{
+    id: 8,
+    name: 'Двойной выстрел',
+    icon: 'http://...',
+    description: 'Двойной выстрел наносит двойной урон',
+  },
+  {
+    id: 9,
+    name: 'Нокаутирующий удар',
+    icon: 'http://...',
+    description: 'Описание недоступно',
+  }]);
 });
